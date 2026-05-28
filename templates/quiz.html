@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>質問 - 理系タイプ診断</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picocss@1/css/pico.min.css">
+    <style>
+        html { background-color: #0f172a; }
+        body {
+            max-width: 600px; margin: 0 auto; padding: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc; min-height: 100dvh;
+            display: flex; flex-direction: column; justify-content: center;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px; border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+        .progress-text {
+            color: #38bdf8; font-size: 0.9rem; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px;
+        }
+        progress { height: 8px; margin-bottom: 30px; }
+        h2 { font-size: 1.4rem; color: #ffffff; line-height: 1.5; margin-bottom: 35px; }
+        
+        /* ボタンを通常の縦並びブロックに変更 */
+        .option-form {
+            display: block; width: 100%; margin: 0; padding: 0;
+        }
+        .option-btn {
+            display: block; width: 100%; background: #1e293b;
+            color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 20px; margin-bottom: 14px; border-radius: 12px;
+            text-align: left; font-size: 1rem; font-weight: 500; cursor: pointer;
+            transition: all 0.2s ease; box-sizing: border-box;
+        }
+        .option-btn:hover {
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            color: #ffffff; border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .card { padding: 25px 16px; border-radius: 16px; }
+            h2 { font-size: 1.2rem; margin-bottom: 25px; }
+            .option-btn { padding: 14px 16px; font-size: 0.95rem; margin-bottom: 10px; border-radius: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="progress-text">Question {{ current_num }} / {{ total_questions }}</div>
+        <progress value="{{ current_num }}" max="{{ total_questions }}"></progress>
+
+        <h2>{{ question.text }}</h2>
+
+        {% for key, value in question.options.items() %}
+            <form action="/quiz" method="POST" class="option-form">
+                <input type="hidden" name="past_answers" value="{{ next_past_answers }}">
+                <input type="hidden" name="answer" value="{{ key }}">
+                <button type="submit" class="option-btn">
+                    {{ value.text }}
+                </button>
+            </form>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

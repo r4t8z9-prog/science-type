@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>診断結果 - 理系タイプ診断</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picocss@1/css/pico.min.css">
+    <style>
+        html { background-color: #0f172a; }
+        body {
+            max-width: 600px; margin: 0 auto; padding: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc; min-height: 100dvh;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
+            box-sizing: border-box;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px 25px; border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+            box-sizing: border-box;
+        }
+        .type-header {
+            text-align: center; border-bottom: 2px solid #38bdf8;
+            padding-bottom: 20px; margin-bottom: 25px;
+        }
+        .type-name {
+            font-size: 2.4rem; color: #38bdf8; font-weight: 800;
+            margin-bottom: 8px; text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+        .type-title { font-size: 1.1rem; color: #94a3b8; font-weight: bold; }
+        h3 {
+            font-size: 1.2rem; color: #ffffff; border-left: 4px solid #38bdf8;
+            padding-left: 10px; margin-top: 25px; margin-bottom: 15px;
+        }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; color: #cbd5e1; }
+
+        .badge-list, .mini-badge-list {
+            display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 0;
+        }
+        .mini-badge-list { gap: 6px; }
+
+        .badge-field {
+            background: rgba(52, 211, 153, 0.15); color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            padding: 6px 14px; border-radius: 30px; font-size: 0.9rem; font-weight: bold;
+        }
+        .badge-job {
+            background: rgba(56, 189, 248, 0.15); color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 6px 14px; border-radius: 30px; font-size: 0.9rem; font-weight: bold;
+        }
+
+        .badge-field.mini { padding: 4px 10px; font-size: 0.8rem; border-radius: 20px; display: inline-block; }
+        .badge-job.mini { padding: 4px 10px; font-size: 0.8rem; border-radius: 20px; display: inline-block; }
+
+        .near-box {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.15), rgba(30, 41, 59, 0.7));
+            border-left: 4px solid #2563eb;
+        }
+        details {
+            background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px; margin-top: 15px; padding: 0; transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        details[open] { border-color: rgba(56, 189, 248, 0.3); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        summary {
+            padding: 12px 18px; font-weight: bold; color: #38bdf8; cursor: pointer;
+            list-style: none; display: flex; justify-content: space-between; align-items: center;
+        }
+        summary::after { content: '▼'; font-size: 0.8rem; color: #64748b; transition: transform 0.2s; }
+        details[open] summary::after { transform: rotate(180deg); color: #38bdf8; }
+        
+        .details-content { padding: 0 18px 18px 18px; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem; }
+        .details-content h5 { margin-top: 15px; margin-bottom: 8px; font-size: 0.85rem; color: #94a3b8; font-weight: bold; }
+
+        /* SNSシェアエリアのスタイル */
+        .share-container {
+            display: flex; gap: 12px; width: 100%; margin-top: 30px; margin-bottom: 15px; box-sizing: border-box;
+        }
+        .share-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px; border-radius: 12px; font-weight: bold; font-size: 0.95rem;
+            text-decoration: none; text-align: center; transition: all 0.2s ease; box-sizing: border-box;
+        }
+        .share-x { background-color: #ffffff; color: #000000; border: 1px solid #ffffff; }
+        .share-x:hover { background-color: #e2e8f0; }
+        .share-line { background-color: #06c755; color: #ffffff; border: 1px solid #06c755; }
+        .share-line:hover { background-color: #05b04b; }
+
+        .action-area {
+            width: 100%; padding: 0; margin-bottom: 50px; box-sizing: border-box;
+        }
+        .restart-btn {
+            display: block; width: 100%; background: #334155; color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 12px;
+            text-align: center; font-weight: bold; text-decoration: none; transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        .restart-btn:hover { background: #475569; box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
+
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .card { padding: 20px 16px; border-radius: 16px; margin-bottom: 16px; }
+            .type-name { font-size: 1.8rem; }
+            .type-title { font-size: 0.95rem; }
+            h3 { font-size: 1.1rem; margin-top: 18px; margin-bottom: 12px; }
+            .badge-field, .badge-job { padding: 5px 12px; font-size: 0.85rem; }
+            summary { padding: 10px 14px; font-size: 0.95rem; }
+            .details-content { padding: 0 14px 14px 14px; font-size: 0.9rem; }
+            .share-container { gap: 8px; margin-top: 20px; }
+            .share-btn { font-size: 0.85rem; padding: 10px; border-radius: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        
+        <div class="card">
+            <div class="type-header">
+                <p style="margin:0; font-size:0.8rem; color:#94a3b8; letter-spacing: 0.05em;">ANALYTIC RESULT</p>
+                <h1 class="type-name">{{ primary_type }}</h1>
+                <div class="type-title">{{ detail.title }}</div>
+            </div>
+            
+            <h3>📄 タイプの特徴</h3>
+            <p style="color: #cbd5e1; line-height: 1.6; margin-bottom: 0;">{{ detail.desc }}</p>
+            
+            <h3>💪 あなたの強み</h3>
+            <ul style="margin-bottom: 0;">
+                {% for strength in detail.strengths %}
+                    <li>{{ strength }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>🏫 おすすめの学科</h3>
+            <ul class="badge-list" style="margin-bottom: 25px;">
+                {% for dept in detail.departments %}
+                    <li class="badge-field">{{ dept }}</li>
+                {% endfor %}
+            </ul>
+            
+            <h3>💼 将来の職業</h3>
+            <ul class="badge-list">
+                {% for job in detail.jobs %}
+                    <li class="badge-job">{{ job }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card near-box">
+            <h4 style="color:#ffffff; font-size:1.05rem; margin-bottom:4px;">🤝 次に近い特徴のタイプ（2位・3位）</h4>
+            <p style="margin:0; font-size:0.85rem; color:#94a3b8;">タップすると詳細を展開できます</p>
+            
+            <details>
+                <summary>2位：{{ near_types[0] }}</summary>
+                <div class="details-content">
+                    <h5>📄 特徴</h5>
+                    <p style="margin-bottom:12px; color:#cbd5e1; line-height:1.5;">{{ all_details[near_types[0]].desc }}</p>
+                    <h5>🏫 おすすめの学科</h5>
+                    <div class="mini-badge-list" style="margin-bottom: 12px;">
+                        {% for dept in all_details[near_types[0]].departments %}
+                            <span class="badge-field mini">{{ dept }}</span>
+                        {% endfor %}
+                    </div>
+                    <h5>💼 将来の職業</h5>
+                    <div class="mini-badge-list">
+                        {% for job in all_details[near_types[0]].jobs %}
+                            <span class="badge-job mini">{{ job }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary>3位：{{ near_types[1] }}</summary>
+                <div class="details-content">
+                    <h5>📄 特徴</h5>
+                    <p style="margin-bottom:12px; color:#cbd5e1; line-height:1.5;">{{ all_details[near_types[1]].desc }}</p>
+                    <h5>🏫 おすすめの学科</h5>
+                    <div class="mini-badge-list" style="margin-bottom: 12px;">
+                        {% for dept in all_details[near_types[1]].departments %}
+                            <span class="badge-field mini">{{ dept }}</span>
+                        {% endfor %}
+                    </div>
+                    <h5>💼 将来の職業</h5>
+                    <div class="mini-badge-list">
+                        {% for job in all_details[near_types[1]].jobs %}
+                            <span class="badge-job mini">{{ job }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="share-container">
+            <a id="share-x-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-btn share-x">
+                𝕏 結果をポスト
+            </a>
+            <a id="share-line-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-btn share-line">
+                💬 LINEで送る
+            </a>
+        </div>
+
+        <div class="action-area">
+            <a href="/" class="restart-btn">⚙️ もう一度診断する</a>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 現在表示しているサイトのURLを取得（公開した後に自動でそのURLになります）
+            const currentUrl = window.location.origin;
+            
+            // 画面内の「〇〇型」というテキストを取得
+            const typeName = "{{ primary_type }}";
+            
+            // シェアする文章を作成
+            const shareText = `【理系タイプ診断】私の診断結果は「${typeName}」でした！\nあなたに潜む理系のポテンシャルを解き明かそう！\n\n#理系タイプ診断 #進路診断\n`;
+            
+            // X(Twitter)用のURLを設定
+            const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(currentUrl)}`;
+            document.getElementById("share-x-btn").href = xUrl;
+            
+            // LINE用のURLを設定
+            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + currentUrl)}`;
+            document.getElementById("share-line-btn").href = lineUrl;
+        });
+    </script>
+
+</body>
+</html>
