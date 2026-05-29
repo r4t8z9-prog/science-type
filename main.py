@@ -2,8 +2,12 @@ import os
 import random
 from flask import Flask, render_template, request, redirect, url_for
 from questions import QUESTIONS, TYPES, TYPE_DETAILS
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY')
 
 def calculate_results(answers):
     """回答データからスコアを計算する関数"""
