@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://science-type.onrender.com/</loc>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://science-type.onrender.com/result/P</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://science-type.onrender.com/result/C</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://science-type.onrender.com/result/B</loc>
+    <priority>0.80</priority>
+  </url>
+    <url>
+    <loc>https://science-type.onrender.com/result/I</loc>
+    <priority>0.80</priority>
+  </url>
+</urlset>

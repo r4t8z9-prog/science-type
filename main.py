@@ -1,6 +1,6 @@
 import os
 import random
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from questions import QUESTIONS, TYPES, TYPE_DETAILS
 from dotenv import load_dotenv
 
@@ -38,68 +38,15 @@ def calculate_results(answers):
 @app.route('/')
 def index():
     """スタート画面"""
-    return """
-    <!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>理系タイプ診断</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picocss@1/css/pico.min.css">
-        <style>
-            html { background-color: #0f172a; }
-            body {
-                max-width: 600px; margin: 0 auto; padding: 20px;
-                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-                color: #f8fafc; min-height: 100dvh;
-                display: flex; flex-direction: column; justify-content: center;
-                font-family: sans-serif; text-align: center;
-                box-sizing: border-box;
-            }
-            .card {
-                background: rgba(30, 41, 59, 0.7);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                padding: 40px 30px; border-radius: 20px;
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            }
-            h1 { font-size: 2.2rem; color: #ffffff; font-weight: 800; margin-bottom: 15px; }
-            .accent { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
-            p { color: #94a3b8; font-size: 1.05rem; line-height: 1.6; margin-bottom: 35px; }
-            .start-btn {
-                display: inline-block;
-                background: linear-gradient(90deg, #2563eb, #1d4ed8);
-                color: white; padding: 16px 32px;
-                text-decoration: none; border-radius: 12px;
-                font-weight: bold; font-size: 1.1rem;
-                transition: all 0.2s ease;
-                box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
-            }
-            .start-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
-                background: linear-gradient(90deg, #3b82f6, #2563eb);
-            }
-            @media (max-width: 480px) {
-                body { padding: 16px; }
-                .card { padding: 35px 20px; border-radius: 16px; }
-                h1 { font-size: 1.8rem; }
-                p { font-size: 0.95rem; margin-bottom: 25px; }
-                .start-btn { width: 100%; box-sizing: border-box; padding: 14px; font-size: 1rem; }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="card">
-            <h1>🚀 <span class="accent">理系タイプ診断</span></h1>
-            <p>「自分は本当に理系に向いているのかな」と、進路に悩んでいませんか？20の質問であなたに潜む理系のポテンシャルを解き明かします。</p>
-            <form action="/quiz" method="POST">
-                <input type="hidden" name="past_answers" value="">
-                <button type="submit" class="start-btn" style="border:none; cursor:pointer;">診断をスタートする</button>
-            </form>
-        </div>
-    </body>
-    </html>
-    """
+    return render_template('index.html')
+
+@app.route('/robots.txt')
+def robots_txt():
+    return send_from_directory(app.static_folder, 'robots.txt')
+
+@app.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory(app.static_folder, 'sitemap.xml')
 
 @app.route('/quiz', methods=['POST'])  # 🌟 GETは使わず、常にPOSTでデータを受け取る仕様にします
 def quiz():

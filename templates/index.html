@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="OGujN50jpfkmuZ4NHd7R8PJ2CfzuD4t6Bq1DpqQoeqY" />
+
+    <!-- SEO Meta Tags -->
+    <title>理系タイプ診断｜あなたの隠れた才能を見つけよう</title>
+    <meta name="description" content="「自分は本当に理系に向いているのかな？」20の質問であなたのポテンシャルを解き明かし、最適な理系分野（物理、化学、生物、情報科学など）を診断します。">
+    <meta name="keywords" content="理系, 診断, 性格診断, 適性, 進路, 物理, 化学, 生物, 情報科学, プログラミング">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://science-type.onrender.com/">
+    <meta property="og:title" content="理系タイプ診断｜あなたの隠れた才能を見つけよう">
+    <meta property="og:description" content="20の質問であなたのポテンシャルを解き明かし、最適な理系分野を診断します。">
+    <!-- <meta property="og:image" content="https://science-type.onrender.com/static/ogp.png"> -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://science-type.onrender.com/">
+    <meta property="twitter:title" content="理系タイプ診断｜あなたの隠れた才能を見つけよう">
+    <meta property="twitter:description" content="20の質問であなたのポテンシャルを解き明かし、最適な理系分野を診断します。">
+    <!-- <meta property="twitter:image" content="https://science-type.onrender.com/static/ogp.png"> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picocss@1/css/pico.min.css">
+    <style>
+        html { background-color: #0f172a; }
+        body {
+            max-width: 600px; margin: 0 auto; padding: 20px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc; min-height: 100dvh;
+            display: flex; flex-direction: column; justify-content: center;
+            font-family: sans-serif; text-align: center;
+            box-sizing: border-box;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 30px; border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        h1 { font-size: 2.2rem; color: #ffffff; font-weight: 800; margin-bottom: 15px; }
+        .accent { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
+        p { color: #94a3b8; font-size: 1.05rem; line-height: 1.6; margin-bottom: 35px; }
+        .start-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            color: white; padding: 16px 32px;
+            text-decoration: none; border-radius: 12px;
+            font-weight: bold; font-size: 1.1rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+        }
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+        }
+        @media (max-width: 480px) {
+            body { padding: 16px; }
+            .card { padding: 35px 20px; border-radius: 16px; }
+            h1 { font-size: 1.8rem; }
+            p { font-size: 0.95rem; margin-bottom: 25px; }
+            .start-btn { width: 100%; box-sizing: border-box; padding: 14px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🚀 <span class="accent">理系タイプ診断</span></h1>
+        <p>「自分は本当に理系に向いているのかな」と、進路に悩んでいませんか？20の質問であなたに潜む理系のポテンシャルを解き明かします。</p>
+        <form action="/quiz" method="POST">
+            <input type="hidden" name="past_answers" value="">
+            <button type="submit" class="start-btn" style="border:none; cursor:pointer;">診断をスタートする</button>
+        </form>
+    </div>
+</body>
+</html>
