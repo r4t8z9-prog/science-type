@@ -5,19 +5,35 @@
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://science-type.onrender.com/result/P</loc>
+    <loc>https://science-type.onrender.com/result/ビルダー型</loc>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://science-type.onrender.com/result/C</loc>
+    <loc>https://science-type.onrender.com/result/ロジック型</loc>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://science-type.onrender.com/result/B</loc>
+    <loc>https://science-type.onrender.com/result/リサーチャー型</loc>
     <priority>0.80</priority>
   </url>
-    <url>
-    <loc>https://science-type.onrender.com/result/I</loc>
+  <url>
+    <loc>https://science-type.onrender.com/result/イノベーター型</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://science-type.onrender.com/result/システムデザイナー型</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://science-type.onrender.com/result/ソーシャルエンジニア型</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://science-type.onrender.com/result/メディカルエンジニア型</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://science-type.onrender.com/result/プロデューサー型</loc>
     <priority>0.80</priority>
   </url>
 </urlset>

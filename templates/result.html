@@ -78,7 +78,6 @@
         .details-content { padding: 0 18px 18px 18px; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem; }
         .details-content h5 { margin-top: 15px; margin-bottom: 8px; font-size: 0.85rem; color: #94a3b8; font-weight: bold; }
 
-        /* SNSシェアエリアのスタイル */
         .share-container {
             display: flex; gap: 12px; width: 100%; margin-top: 30px; margin-bottom: 15px; box-sizing: border-box;
         }
@@ -154,7 +153,7 @@
                 {% endfor %}
             </ul>
         </div>
-
+        {% if near_types %}
         <div class="card near-box">
             <h4 style="color:#ffffff; font-size:1.05rem; margin-bottom:4px;">🤝 次に近い特徴のタイプ（2位・3位）</h4>
             <p style="margin:0; font-size:0.85rem; color:#94a3b8;">タップすると詳細を展開できます</p>
@@ -199,6 +198,7 @@
                 </div>
             </details>
         </div>
+        {% endif %}
 
         <div class="share-container">
             <a id="share-x-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-btn share-x">
@@ -217,20 +217,13 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 現在表示しているサイトのURLを取得（公開した後に自動でそのURLになります）
-            const currentUrl = window.location.origin;
-            
-            // 画面内の「〇〇型」というテキストを取得
+            const currentUrl = window.location.href;
             const typeName = "{{ primary_type }}";
-            
-            // シェアする文章を作成
             const shareText = `【理系タイプ診断】私の診断結果は「${typeName}」でした！\nあなたに潜む理系のポテンシャルを解き明かそう！\n\n#理系タイプ診断 #進路診断\n`;
             
-            // X(Twitter)用のURLを設定
             const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(currentUrl)}`;
             document.getElementById("share-x-btn").href = xUrl;
             
-            // LINE用のURLを設定
             const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + currentUrl)}`;
             document.getElementById("share-line-btn").href = lineUrl;
         });

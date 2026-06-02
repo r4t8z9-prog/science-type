@@ -1,17 +1,15 @@
 import os
 import random
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, session
 from questions import QUESTIONS, TYPES, TYPE_DETAILS
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Set the static folder to the 'static' directory in the root
 app = Flask(__name__, static_folder='static')
 app.secret_key = os.getenv('SECRET_KEY')
 
 def calculate_results(answers):
-    """回答データからスコアを計算する関数"""
     scores = {t: 0 for t in TYPES}
     for q_idx, option_key in enumerate(answers):
         if q_idx >= len(QUESTIONS):
@@ -37,7 +35,6 @@ def calculate_results(answers):
 
 @app.route('/')
 def index():
-    """スタート画面"""
     return render_template('index.html')
 
 @app.route('/robots.txt')
@@ -50,7 +47,6 @@ def sitemap():
 
 @app.route('/quiz', methods=['POST'])
 def quiz():
-    """診断中の1問1画面の処理"""
     past_answers_str = request.form.get('past_answers', '')
     
     if past_answers_str:
@@ -65,16 +61,12 @@ def quiz():
     current_idx = len(answers)
 
     if current_idx >= len(QUESTIONS):
-        primary, near, all_scores = calculate_results(answers)
-        detail_data = TYPE_DETAILS.get(primary)
-        
-        return render_template(
-            'result.html',
-            primary_type=primary,
-            near_types=near,
-            detail=detail_data,
-            all_details=TYPE_DETAILS
-        )
+        primary, near, _ = calculate_results(answers)
+        session['result_data'] = {
+            'primary': primary,
+            'near': near
+        }
+        return redirect(url_for('show_result', type_name=primary))
 
     current_question = QUESTIONS[current_idx]
     
@@ -97,9 +89,30 @@ def quiz():
         next_past_answers=next_past_answers
     )
 
+@app.route('/result/<type_name>')
+def show_result(type_name):
+    if type_name not in TYPE_DETAILS:
+        return redirect(url_for('index'))
+
+    detail_data = TYPE_DETAILS.get(type_name)
+
+    result_data = session.pop('result_data', None)
+    
+    near_types = []
+    if result_data and result_data.get('primary') == type_name:
+        near_types = result_data.get('near', [])
+
+    return render_template(
+        'result.html',
+        primary_type=type_name,
+        near_types=near_types,
+        detail=detail_data,
+        all_details=TYPE_DETAILS
+    )
+
 def main():
     port = int(os.environ.get('PORT', 80))
-    app.run(host='0.0.0.0', port=port, debug=False) # Set debug to False for production
+    app.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == '__main__':
     main()
