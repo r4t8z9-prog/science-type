@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = Flask(__name__)
+# Set the static folder to the 'static' directory in the root
+app = Flask(__name__, static_folder='static')
 app.secret_key = os.getenv('SECRET_KEY')
 
 def calculate_results(answers):
@@ -21,7 +22,6 @@ def calculate_results(answers):
             scores[selected_option["main"]] += 2
             scores[selected_option["sub"]] += 1
     
-    # 公平なタイブレイク（同点処理）
     max_score = max(scores.values())
     highest_types = [t for t in TYPES if scores[t] == max_score]
     primary_type = random.choice(highest_types)
@@ -48,26 +48,22 @@ def robots_txt():
 def sitemap():
     return send_from_directory(app.static_folder, 'sitemap.xml')
 
-@app.route('/quiz', methods=['POST'])  # 🌟 GETは使わず、常にPOSTでデータを受け取る仕様にします
+@app.route('/quiz', methods=['POST'])
 def quiz():
     """診断中の1問1画面の処理"""
-    # 🌟 画面から「これまでの回答履歴（カンマ区切りの文字列）」を受け取る
     past_answers_str = request.form.get('past_answers', '')
     
-    # 文字列をリストに変換する（空文字なら空リスト）
     if past_answers_str:
         answers = past_answers_str.split(',')
     else:
         answers = []
         
-    # 今回押されたボタンの回答を取得
     selected_option = request.form.get('answer')
     if selected_option:
         answers.append(selected_option)
 
     current_idx = len(answers)
 
-    # 20問すべて解き終わったら結果画面へ
     if current_idx >= len(QUESTIONS):
         primary, near, all_scores = calculate_results(answers)
         detail_data = TYPE_DETAILS.get(primary)
@@ -80,10 +76,8 @@ def quiz():
             all_details=TYPE_DETAILS
         )
 
-    # 現在の質問
     current_question = QUESTIONS[current_idx]
     
-    # 選択肢のシャッフル
     options_items = list(current_question["options"].items())
     random.shuffle(options_items)
     shuffled_options = dict(options_items)
@@ -93,7 +87,6 @@ def quiz():
         "options": shuffled_options
     }
 
-    # 🌟 次の画面へ引き渡すための「新しい回答履歴文字列」を作成
     next_past_answers = ','.join(answers)
 
     return render_template(
@@ -101,12 +94,12 @@ def quiz():
         question=display_question,
         current_num=current_idx + 1,
         total_questions=len(QUESTIONS),
-        next_past_answers=next_past_answers  # 🌟 HTML側に引き渡す
+        next_past_answers=next_past_answers
     )
 
 def main():
     port = int(os.environ.get('PORT', 80))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False) # Set debug to False for production
 
 if __name__ == '__main__':
     main()
