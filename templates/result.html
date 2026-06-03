@@ -217,14 +217,14 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const currentUrl = window.location.href;
+            const shareUrl = window.location.origin;
             const typeName = "{{ primary_type }}";
-            const shareText = `【理系タイプ診断】私の診断結果は「${typeName}」でした！\nあなたに潜む理系のポテンシャルを解き明かそう！\n\n#理系タイプ診断 #進路診断\n`;
+            const shareText = `【理系タイプ診断】私の診断結果は「${typeName}」でした！\nあなたに潜む理系のポテンシャルを解き明かしよう！\n\n#理系タイプ診断 #進路診断\n`;
             
-            const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(currentUrl)}`;
+            const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
             document.getElementById("share-x-btn").href = xUrl;
             
-            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + currentUrl)}`;
+            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + shareUrl)}`;
             document.getElementById("share-line-btn").href = lineUrl;
         });
     </script>
