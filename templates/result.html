@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>診断結果 - 理系タイプ診断</title>
+
+    <!-- OGP Tags for Shareability -->
+    <meta property="og:title" content="文理選択や進路に迷う高校生必見！20問であなたの理系適性や向いてる学科・職業を診断【理系タイプ診断】">
+    <meta property="og:description" content="「自分って本当に理系に向いてるのかな」と進路に悩んでいませんか？スマホで5分、20問の質問に答えるだけで、あなたの理系適性を8タイプで診断します。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://science-type.onrender.com/">
+    <meta property="og:image" content="https://science-type.onrender.com/static/ogp.png">
+    <meta property="og:site_name" content="理系タイプ診断">
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="文理選択や進路に迷う高校生必見！20問であなたの理系適性や向いてる学科・職業を診断【理系タイプ診断】">
+    <meta name="twitter:description" content="スマホで5分、20問の質問に答えるだけで、あなたの理系適性を8タイプで診断します。">
+    <meta name="twitter:image" content="https://science-type.onrender.com/static/ogp.png">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picocss@1/css/pico.min.css">
     <style>
         html { background-color: #0f172a; }
@@ -219,12 +234,20 @@
         document.addEventListener("DOMContentLoaded", function() {
             const shareUrl = window.location.origin;
             const typeName = "{{ primary_type }}";
-            const shareText = `【理系タイプ診断】私の診断結果は「${typeName}」でした！\nあなたに潜む理系のポテンシャルを解き明かしよう！\n\n#理系タイプ診断 #進路診断\n`;
+            // ユーザー指定の短い共有テキスト
+            const shareText = `【理系タイプ診断】私の診断結果は「${typeName}」でした！`;
+            // Twitter用のハッシュタグ（カンマ区切り）
+            const hashtags = "理系タイプ診断,進路診断";
             
-            const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+            // X (Twitter) のURLを生成
+            const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}&hashtags=${encodeURIComponent(hashtags)}`;
             document.getElementById("share-x-btn").href = xUrl;
             
-            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(shareText + shareUrl)}`;
+            // LINEのURLを生成（ハッシュタグをテキストに含める）
+            const lineShareText = `${shareText}
+#理系タイプ診断 #進路診断
+${shareUrl}`;
+            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(lineShareText)}`;
             document.getElementById("share-line-btn").href = lineUrl;
         });
     </script>
